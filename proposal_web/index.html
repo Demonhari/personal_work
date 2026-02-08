@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>For Viash 💜</title>
+  <title>For Vaish 💜</title>
 
   <style>
     :root{
@@ -13,10 +13,8 @@
       --card2:#f2ead3;
       --ink:#2c2c2c;
       --muted:#6b6b6b;
-      --line:#d9cfb5;
       --good:#34c759;
       --bad:#ff3b30;
-      --btn:#ffffff;
       --btnLine:#c9bddf;
     }
 
@@ -36,7 +34,6 @@
       overflow:hidden;
     }
 
-    /* subtle floating dots like trendy templates */
     .sparkles{
       position:fixed; inset:0; pointer-events:none; opacity:.22;
       background:
@@ -48,16 +45,12 @@
       filter: blur(.2px);
     }
 
-    .wrap{
-      width:min(560px, 96vw);
-      position:relative;
-    }
+    .wrap{ width:min(560px, 96vw); position:relative; }
 
     .topbar{
       display:flex;
-      justify-content:space-between;
+      justify-content:center;
       align-items:center;
-      gap:12px;
       margin-bottom:10px;
     }
 
@@ -69,36 +62,11 @@
       padding:10px 12px;
       display:flex;
       justify-content:center;
-      font-weight:700;
+      font-weight:800;
       color:#f7f7ff;
       box-shadow: 0 10px 24px rgba(0,0,0,.15);
       backdrop-filter: blur(8px);
     }
-
-    .pill{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:14px;
-      background: rgba(255,255,255,.25);
-      border: 1px solid rgba(255,255,255,.28);
-      color:#fff;
-      box-shadow: 0 10px 24px rgba(0,0,0,.15);
-      backdrop-filter: blur(8px);
-      user-select:none;
-    }
-
-    .pill button{
-      all:unset;
-      cursor:pointer;
-      padding:6px 10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.18);
-      border:1px solid rgba(255,255,255,.2);
-      font-weight:700;
-    }
-    .pill button:active{ transform: scale(.98); }
 
     .card{
       background: linear-gradient(180deg, var(--card), var(--card2));
@@ -108,22 +76,39 @@
       overflow:hidden;
     }
 
-    .cardInner{
-      padding: 18px 16px 16px;
-    }
+    .startScreen, .cardInner{ padding: 18px 16px 16px; }
 
-    .title{
-      font-weight:800;
-      font-size:20px;
-      margin: 2px 0 12px;
-      min-height: 28px;
+    .startTitle{
+      font-size:22px;
+      font-weight:900;
+      margin: 2px 0 8px;
     }
 
     .sub{
       margin:0 0 14px;
       color:var(--muted);
-      font-weight:600;
+      font-weight:700;
       font-size:13px;
+      line-height:1.35;
+    }
+
+    .primary{
+      padding: 14px 18px;
+      border-radius: 12px;
+      border:0;
+      background: #2b2b2b;
+      color:#fff;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+    }
+    .primary:active{ transform: scale(.99); }
+
+    .title{
+      font-weight:900;
+      font-size:20px;
+      margin: 2px 0 12px;
+      min-height: 28px;
     }
 
     .imgBox{
@@ -135,11 +120,7 @@
       margin: 10px 0 12px;
       display:none;
     }
-    .imgBox img{
-      display:block;
-      width:100%;
-      height:auto;
-    }
+    .imgBox img{ display:block; width:100%; height:auto; }
 
     .options{
       display:flex;
@@ -155,7 +136,7 @@
       border:2px solid var(--btnLine);
       background: rgba(255,255,255,.7);
       color: var(--ink);
-      font-weight:800;
+      font-weight:900;
       font-size:16px;
       cursor:pointer;
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
@@ -178,11 +159,9 @@
       color:#fff;
     }
 
-    /* the final yes/no colors like the screenshot */
     .yes{ background: rgba(52,199,89,.92); border-color: rgba(52,199,89,1); color:#fff; }
     .no{ background: rgba(255,59,48,.92); border-color: rgba(255,59,48,1); color:#fff; position:relative; }
 
-    /* toast overlay similar to screenshot */
     .toast{
       display:none;
       margin-top:12px;
@@ -200,53 +179,6 @@
       to{ transform: translateY(0); opacity:1; }
     }
 
-    /* start screen */
-    .startScreen{
-      padding: 18px 16px 16px;
-    }
-    .startTitle{
-      font-size:22px;
-      font-weight:900;
-      margin: 2px 0 8px;
-    }
-    .field{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-      flex-wrap:wrap;
-    }
-    input{
-      flex: 1 1 220px;
-      padding: 14px 14px;
-      border-radius: 12px;
-      border:2px solid var(--btnLine);
-      outline:none;
-      font-size:16px;
-      font-weight:800;
-      background: rgba(255,255,255,.9);
-    }
-    .primary{
-      flex: 0 0 auto;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border:0;
-      background: #2b2b2b;
-      color:#fff;
-      font-weight:900;
-      font-size:16px;
-      cursor:pointer;
-    }
-    .primary:active{ transform: scale(.99); }
-
-    .hint{
-      margin-top:10px;
-      color: var(--muted);
-      font-weight:700;
-      font-size:12px;
-      line-height:1.35;
-    }
-
-    /* confetti dots */
     .confetti{
       position:fixed; inset:0; pointer-events:none;
       display:none;
@@ -265,33 +197,20 @@
 <body>
   <div class="sparkles"></div>
 
-  <!-- Background music (place your file as song.mp3 in the same folder) -->
+  <!-- Music will start after the first click (browser policy). Put song.mp3 in same folder. -->
   <audio id="bgm" src="song.mp3" preload="auto" loop></audio>
 
   <div class="wrap">
     <div class="topbar">
       <div class="score" id="score">Score: 0/4</div>
-      <div class="pill">
-        <span id="musicLabel">Music: Off</span>
-        <button id="musicBtn" type="button">Toggle</button>
-      </div>
     </div>
 
     <div class="card">
       <!-- START SCREEN -->
       <div class="startScreen" id="startScreen">
-        <div class="startTitle" id="startTitle">Hi Viash 💕</div>
+        <div class="startTitle">Hi Vaish 💕</div>
         <div class="sub">I made a tiny quiz… and there’s a very important question at the end.</div>
-
-        <div class="field">
-          <input id="nameInput" value="Viash" maxlength="20" />
-          <button class="primary" id="startBtn" type="button">Start 💜</button>
-        </div>
-
-        <div class="hint">
-          ✅ Tip: Put an audio file named <b>song.mp3</b> in this folder for background music.<br>
-          ✅ Your photo question will use <b>screenshot.jpeg</b> (already in your folder).
-        </div>
+        <button class="primary" id="startBtn" type="button">Start 💜</button>
       </div>
 
       <!-- QUIZ SCREEN -->
@@ -313,27 +232,26 @@
 
 <script>
   // ====== CUSTOMIZE YOUR QUIZ HERE ======
-  // For photo questions, set image: "screenshot.jpeg" (or any file in same folder).
   const quiz = [
     {
       type: "mcq",
-      q: "What is the gift that I bought on our first meet?",
-      options: ["Teddy 🧸","Chocolates 🍫","Flowers 🌹","Never gifted 😅"],
+      q: "What is the gift that I bought on our first meet?(Our first date)",
+      options: ["Necklace","Chocolates 🍫","Flowers 🌹","Never gifted 😅"],
       answer: 0,
-      wrongMsg: "😤 Kill you after the test"
+      wrongMsg: "Really Vaish!!😤 Kill you after the test"
     },
     {
       type: "mcq",
-      q: "Tell me where do you want to travel next?",
-      options: ["Kenya 🇰🇪","Greece 🇬🇷","Japan 🇯🇵","Switzerland 🇨🇭"],
+      q: "Tell me where do you want to Hike next?",
+      options: ["Rwenzori Mountains","Mount kilimanjaro","Base Camp","Kalsubai Peak, Maharashtra"],
       answer: 2,
       wrongMsg: "Hamayya! Noted. 😏"
     },
     {
       type: "photo",
       q: "Where did we click this photo?",
-      image: "screenshot.jpeg", // <-- uses the file you already have
-      options: ["Manali","Ooty","Wayanad","Goa"],
+      image: "screenshot.jpeg",
+      options: ["Dagenham","Bromlry","Leytonstone","Surrey"],
       answer: 2,
       wrongMsg: "Think harder 😌"
     },
@@ -346,10 +264,11 @@
   ];
   // =====================================
 
+  const HER_NAME = "Vaish";
+
   let index = 0;
   let score = 0;
   let locked = false;
-  let herName = "Viash";
 
   const scoreEl = document.getElementById("score");
   const questionEl = document.getElementById("question");
@@ -361,53 +280,10 @@
 
   const startScreen = document.getElementById("startScreen");
   const quizScreen = document.getElementById("quizScreen");
-  const nameInput = document.getElementById("nameInput");
-  const startTitle = document.getElementById("startTitle");
   const startBtn = document.getElementById("startBtn");
 
   const bgm = document.getElementById("bgm");
-  const musicBtn = document.getElementById("musicBtn");
-  const musicLabel = document.getElementById("musicLabel");
-
   const confetti = document.getElementById("confetti");
-
-  function updateStartTitle(){
-    const val = (nameInput.value || "Viash").trim();
-    startTitle.textContent = `Hi ${val} 💕`;
-  }
-  nameInput.addEventListener("input", updateStartTitle);
-  updateStartTitle();
-
-  function setMusicUI(){
-    const on = !bgm.paused;
-    musicLabel.textContent = `Music: ${on ? "On" : "Off"}`;
-  }
-
-  async function toggleMusic(){
-    try{
-      if(bgm.paused){
-        await bgm.play(); // requires user gesture (click/tap)
-      } else {
-        bgm.pause();
-      }
-    } catch(e){
-      // if browser blocks autoplay, keep it off
-      bgm.pause();
-    }
-    setMusicUI();
-  }
-
-  musicBtn.addEventListener("click", toggleMusic);
-
-  startBtn.addEventListener("click", async () => {
-    herName = (nameInput.value || "Viash").trim();
-    startScreen.style.display = "none";
-    quizScreen.style.display = "block";
-    index = 0;
-    score = 0;
-    await toggleMusic(); // start music on first real user click
-    loadQuestion();
-  });
 
   function setScore(){
     scoreEl.textContent = `Score: ${score}/${quiz.length}`;
@@ -415,8 +291,7 @@
 
   function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 
-  // typing animation
-  async function typeText(el, text, speed=22){
+  async function typeText(el, text, speed=18){
     el.textContent = "";
     for(let i=0;i<text.length;i++){
       el.textContent += text[i];
@@ -430,6 +305,12 @@
   }
   function hideToast(){
     toastEl.style.display = "none";
+  }
+
+  async function startMusic(){
+    // Browsers won't allow autoplay without a user gesture,
+    // so we start music on the Start button click.
+    try { await bgm.play(); } catch(e) { /* ignore */ }
   }
 
   function popConfetti(){
@@ -458,15 +339,12 @@
     setScore();
     const current = quiz[index];
 
-    // subtitle changes slightly
     subtitleEl.textContent = (current.type === "final")
       ? "Choose wisely 😌"
       : "Answer correctly to level up 😌";
 
-    // typing animation for question
     await typeText(questionEl, current.q, 18);
 
-    // image question
     if(current.type === "photo" && current.image){
       qImg.src = current.image;
       imgBox.style.display = "block";
@@ -476,7 +354,6 @@
       const btn = document.createElement("button");
       btn.className = "optBtn";
 
-      // final yes/no styling
       if(current.type === "final"){
         btn.classList.add(i === 0 ? "yes" : "no");
       }
@@ -488,7 +365,6 @@
   }
 
   function nudgeNoButton(btn){
-    // small dodge movement like the reel
     const x = (Math.random()*120 - 60);
     const y = (Math.random()*40 - 20);
     btn.style.transform = `translate(${x}px, ${y}px)`;
@@ -499,7 +375,6 @@
 
     const current = quiz[index];
 
-    // FINAL SCREEN behavior
     if(current.type === "final"){
       if(i === 1){
         showToast("❌ Invalid choice. System detected you are already my Valentine.");
@@ -507,7 +382,6 @@
         return;
       }
 
-      // yes chosen
       locked = true;
       btn.classList.add("correct");
       score++;
@@ -515,7 +389,7 @@
       popConfetti();
 
       await sleep(250);
-      questionEl.innerHTML = `🎉 Yay ${herName}! You're My Valentine! 🎉`;
+      questionEl.innerHTML = `🎉 Yay ${HER_NAME}! You're My Valentine! 🎉`;
       subtitleEl.innerHTML = `Thank you for making my day special ❤️<br>Now I owe you chocolates + hugs 🫶🍫`;
       optionsEl.innerHTML = "";
       imgBox.style.display = "none";
@@ -523,7 +397,6 @@
       return;
     }
 
-    // Regular questions
     if(i === current.answer){
       locked = true;
       btn.classList.add("correct");
@@ -538,8 +411,17 @@
     }
   }
 
-  // Initialize music UI (off by default)
-  setMusicUI();
+  startBtn.addEventListener("click", async () => {
+    await startMusic();
+    startScreen.style.display = "none";
+    quizScreen.style.display = "block";
+    index = 0;
+    score = 0;
+    loadQuestion();
+  });
+
+  // init score
+  setScore();
 </script>
 </body>
 </html>
