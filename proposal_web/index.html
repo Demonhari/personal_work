@@ -1,200 +1,545 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>For You ❤️</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For Viash 💜</title>
 
   <style>
+    :root{
+      --bg1:#5a2cff;
+      --bg2:#6a67ff;
+      --card:#f6f0df;
+      --card2:#f2ead3;
+      --ink:#2c2c2c;
+      --muted:#6b6b6b;
+      --line:#d9cfb5;
+      --good:#34c759;
+      --bad:#ff3b30;
+      --btn:#ffffff;
+      --btnLine:#c9bddf;
+    }
+
+    *{ box-sizing:border-box; }
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background: linear-gradient(135deg,#6a11cb,#2575fc);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background: radial-gradient(1200px 800px at 20% 15%, #7f5bff33, transparent 60%),
+                  radial-gradient(1000px 700px at 85% 70%, #ff5bd833, transparent 60%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
       min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      color:#333;
+      padding:18px;
+      overflow:hidden;
     }
 
-    .card{
-      background:#fff;
-      width:min(420px,92vw);
-      border-radius:16px;
-      padding:22px;
-      box-shadow:0 20px 40px rgba(0,0,0,.2);
-      text-align:center;
+    /* subtle floating dots like trendy templates */
+    .sparkles{
+      position:fixed; inset:0; pointer-events:none; opacity:.22;
+      background:
+        radial-gradient(circle at 10% 20%, #fff 0 2px, transparent 3px),
+        radial-gradient(circle at 30% 80%, #fff 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 30%, #fff 0 2px, transparent 3px),
+        radial-gradient(circle at 90% 75%, #fff 0 2px, transparent 3px),
+        radial-gradient(circle at 55% 55%, #fff 0 2px, transparent 3px);
+      filter: blur(.2px);
+    }
+
+    .wrap{
+      width:min(560px, 96vw);
+      position:relative;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:10px;
     }
 
     .score{
-      background:#f2f2f2;
-      border-radius:20px;
-      padding:6px 14px;
-      font-weight:600;
-      margin-bottom:14px;
-      display:inline-block;
+      width:100%;
+      background: rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 14px;
+      padding:10px 12px;
+      display:flex;
+      justify-content:center;
+      font-weight:700;
+      color:#f7f7ff;
+      box-shadow: 0 10px 24px rgba(0,0,0,.15);
+      backdrop-filter: blur(8px);
     }
 
-    h2{
-      margin:12px 0 16px;
+    .pill{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:14px;
+      background: rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.28);
+      color:#fff;
+      box-shadow: 0 10px 24px rgba(0,0,0,.15);
+      backdrop-filter: blur(8px);
+      user-select:none;
+    }
+
+    .pill button{
+      all:unset;
+      cursor:pointer;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.2);
+      font-weight:700;
+    }
+    .pill button:active{ transform: scale(.98); }
+
+    .card{
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      border: 2px solid rgba(255,255,255,.55);
+      border-radius: 18px;
+      box-shadow: 0 28px 70px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+
+    .cardInner{
+      padding: 18px 16px 16px;
+    }
+
+    .title{
+      font-weight:800;
       font-size:20px;
+      margin: 2px 0 12px;
+      min-height: 28px;
+    }
+
+    .sub{
+      margin:0 0 14px;
+      color:var(--muted);
+      font-weight:600;
+      font-size:13px;
+    }
+
+    .imgBox{
+      width:100%;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,.08);
+      background:#fff;
+      margin: 10px 0 12px;
+      display:none;
+    }
+    .imgBox img{
+      display:block;
+      width:100%;
+      height:auto;
     }
 
     .options{
       display:flex;
       flex-direction:column;
       gap:10px;
+      margin-top: 4px;
+      position:relative;
     }
 
-    button{
-      padding:12px;
-      border-radius:10px;
-      border:2px solid #e0e0e0;
-      background:#fafafa;
+    .optBtn{
+      padding:14px 14px;
+      border-radius:12px;
+      border:2px solid var(--btnLine);
+      background: rgba(255,255,255,.7);
+      color: var(--ink);
+      font-weight:800;
       font-size:16px;
       cursor:pointer;
-      transition:.15s;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      user-select:none;
     }
+    .optBtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.9); }
+    .optBtn:active{ transform: translateY(0px) scale(.995); }
 
-    button:hover{
-      background:#f0f0f0;
-      transform:scale(1.02);
-    }
-
-    .correct{
-      background:#4CAF50 !important;
+    .optBtn.correct{
+      background: rgba(52,199,89,.92);
+      border-color: rgba(52,199,89,1);
       color:#fff;
-      border-color:#4CAF50;
     }
-
-    .wrong{
-      background:#e53935 !important;
+    .optBtn.wrong{
+      background: rgba(255,59,48,.92);
+      border-color: rgba(255,59,48,1);
       color:#fff;
-      border-color:#e53935;
     }
 
+    /* the final yes/no colors like the screenshot */
+    .yes{ background: rgba(52,199,89,.92); border-color: rgba(52,199,89,1); color:#fff; }
+    .no{ background: rgba(255,59,48,.92); border-color: rgba(255,59,48,1); color:#fff; position:relative; }
+
+    /* toast overlay similar to screenshot */
     .toast{
-      margin-top:14px;
-      font-weight:600;
-      color:#ffeb3b;
       display:none;
-      animation: pop .4s ease;
+      margin-top:12px;
+      padding: 14px 12px;
+      border-radius: 12px;
+      background: rgba(18,18,18,.9);
+      border: 2px solid rgba(255,59,48,.75);
+      color: #ff5c54;
+      font-weight:900;
+      text-shadow: 0 0 10px rgba(255,59,48,.25);
+      animation: pop .25s ease-out;
     }
-
     @keyframes pop{
-      from{transform:scale(.8);opacity:0}
-      to{transform:scale(1);opacity:1}
+      from{ transform: translateY(6px); opacity:0; }
+      to{ transform: translateY(0); opacity:1; }
     }
 
-    .valentine button{
-      font-size:18px;
-      font-weight:600;
+    /* start screen */
+    .startScreen{
+      padding: 18px 16px 16px;
+    }
+    .startTitle{
+      font-size:22px;
+      font-weight:900;
+      margin: 2px 0 8px;
+    }
+    .field{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+    input{
+      flex: 1 1 220px;
+      padding: 14px 14px;
+      border-radius: 12px;
+      border:2px solid var(--btnLine);
+      outline:none;
+      font-size:16px;
+      font-weight:800;
+      background: rgba(255,255,255,.9);
+    }
+    .primary{
+      flex: 0 0 auto;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border:0;
+      background: #2b2b2b;
+      color:#fff;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+    }
+    .primary:active{ transform: scale(.99); }
+
+    .hint{
+      margin-top:10px;
+      color: var(--muted);
+      font-weight:700;
+      font-size:12px;
+      line-height:1.35;
     }
 
-    .yes{background:#4CAF50;color:#fff;border:none;}
-    .no{background:#e53935;color:#fff;border:none;position:relative;}
-
+    /* confetti dots */
+    .confetti{
+      position:fixed; inset:0; pointer-events:none;
+      display:none;
+    }
+    .dot{
+      position:absolute; width:8px; height:8px; border-radius:50%;
+      animation: fall 1200ms ease-in forwards;
+    }
+    @keyframes fall{
+      0% { transform: translateY(-20px) rotate(0deg); opacity:1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity:0; }
+    }
   </style>
 </head>
-<body>
 
-<div class="card">
-  <div class="score" id="score">Score: 0/4</div>
-  <h2 id="question"></h2>
-  <div class="options" id="options"></div>
-  <div class="toast" id="toast"></div>
-</div>
+<body>
+  <div class="sparkles"></div>
+
+  <!-- Background music (place your file as song.mp3 in the same folder) -->
+  <audio id="bgm" src="song.mp3" preload="auto" loop></audio>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div class="score" id="score">Score: 0/4</div>
+      <div class="pill">
+        <span id="musicLabel">Music: Off</span>
+        <button id="musicBtn" type="button">Toggle</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <!-- START SCREEN -->
+      <div class="startScreen" id="startScreen">
+        <div class="startTitle" id="startTitle">Hi Viash 💕</div>
+        <div class="sub">I made a tiny quiz… and there’s a very important question at the end.</div>
+
+        <div class="field">
+          <input id="nameInput" value="Viash" maxlength="20" />
+          <button class="primary" id="startBtn" type="button">Start 💜</button>
+        </div>
+
+        <div class="hint">
+          ✅ Tip: Put an audio file named <b>song.mp3</b> in this folder for background music.<br>
+          ✅ Your photo question will use <b>screenshot.jpeg</b> (already in your folder).
+        </div>
+      </div>
+
+      <!-- QUIZ SCREEN -->
+      <div class="cardInner" id="quizScreen" style="display:none;">
+        <div class="title" id="question"></div>
+        <div class="sub" id="subtitle">Answer correctly to level up 😌</div>
+
+        <div class="imgBox" id="imgBox">
+          <img id="qImg" alt="memory" />
+        </div>
+
+        <div class="options" id="options"></div>
+        <div class="toast" id="toast"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="confetti" id="confetti"></div>
 
 <script>
+  // ====== CUSTOMIZE YOUR QUIZ HERE ======
+  // For photo questions, set image: "screenshot.jpeg" (or any file in same folder).
   const quiz = [
     {
+      type: "mcq",
       q: "What is the gift that I bought on our first meet?",
       options: ["Teddy 🧸","Chocolates 🍫","Flowers 🌹","Never gifted 😅"],
       answer: 0,
       wrongMsg: "😤 Kill you after the test"
     },
     {
-      q: "Where do you want to travel next?",
+      type: "mcq",
+      q: "Tell me where do you want to travel next?",
       options: ["Kenya 🇰🇪","Greece 🇬🇷","Japan 🇯🇵","Switzerland 🇨🇭"],
       answer: 2,
-      wrongMsg: "Hmm… noted anyway 😏"
+      wrongMsg: "Hamayya! Noted. 😏"
     },
     {
+      type: "photo",
       q: "Where did we click this photo?",
+      image: "screenshot.jpeg", // <-- uses the file you already have
       options: ["Manali","Ooty","Wayanad","Goa"],
       answer: 2,
       wrongMsg: "Think harder 😌"
     },
     {
+      type: "final",
       q: "Will you be my Valentine? 💖",
       options: ["Yes ❤️","No 🙃"],
-      answer: 0,
-      final: true
+      answer: 0
     }
   ];
+  // =====================================
 
   let index = 0;
   let score = 0;
+  let locked = false;
+  let herName = "Viash";
 
-  const qEl = document.getElementById("question");
-  const optEl = document.getElementById("options");
   const scoreEl = document.getElementById("score");
-  const toast = document.getElementById("toast");
+  const questionEl = document.getElementById("question");
+  const optionsEl = document.getElementById("options");
+  const toastEl = document.getElementById("toast");
+  const imgBox = document.getElementById("imgBox");
+  const qImg = document.getElementById("qImg");
+  const subtitleEl = document.getElementById("subtitle");
 
-  function loadQuestion(){
-    toast.style.display = "none";
-    optEl.innerHTML = "";
+  const startScreen = document.getElementById("startScreen");
+  const quizScreen = document.getElementById("quizScreen");
+  const nameInput = document.getElementById("nameInput");
+  const startTitle = document.getElementById("startTitle");
+  const startBtn = document.getElementById("startBtn");
+
+  const bgm = document.getElementById("bgm");
+  const musicBtn = document.getElementById("musicBtn");
+  const musicLabel = document.getElementById("musicLabel");
+
+  const confetti = document.getElementById("confetti");
+
+  function updateStartTitle(){
+    const val = (nameInput.value || "Viash").trim();
+    startTitle.textContent = `Hi ${val} 💕`;
+  }
+  nameInput.addEventListener("input", updateStartTitle);
+  updateStartTitle();
+
+  function setMusicUI(){
+    const on = !bgm.paused;
+    musicLabel.textContent = `Music: ${on ? "On" : "Off"}`;
+  }
+
+  async function toggleMusic(){
+    try{
+      if(bgm.paused){
+        await bgm.play(); // requires user gesture (click/tap)
+      } else {
+        bgm.pause();
+      }
+    } catch(e){
+      // if browser blocks autoplay, keep it off
+      bgm.pause();
+    }
+    setMusicUI();
+  }
+
+  musicBtn.addEventListener("click", toggleMusic);
+
+  startBtn.addEventListener("click", async () => {
+    herName = (nameInput.value || "Viash").trim();
+    startScreen.style.display = "none";
+    quizScreen.style.display = "block";
+    index = 0;
+    score = 0;
+    await toggleMusic(); // start music on first real user click
+    loadQuestion();
+  });
+
+  function setScore(){
     scoreEl.textContent = `Score: ${score}/${quiz.length}`;
+  }
+
+  function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+  // typing animation
+  async function typeText(el, text, speed=22){
+    el.textContent = "";
+    for(let i=0;i<text.length;i++){
+      el.textContent += text[i];
+      await sleep(speed);
+    }
+  }
+
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.style.display = "block";
+  }
+  function hideToast(){
+    toastEl.style.display = "none";
+  }
+
+  function popConfetti(){
+    confetti.innerHTML = "";
+    confetti.style.display = "block";
+    const colors = ["#ffffff","#ffd166","#ff4d6d","#7c3aed","#34c759","#60a5fa"];
+    for(let i=0;i<140;i++){
+      const d = document.createElement("div");
+      d.className = "dot";
+      d.style.left = Math.floor(Math.random()*100) + "vw";
+      d.style.top = (Math.floor(Math.random()*20) - 25) + "vh";
+      d.style.background = colors[Math.floor(Math.random()*colors.length)];
+      d.style.animationDelay = Math.floor(Math.random()*450) + "ms";
+      confetti.appendChild(d);
+    }
+    setTimeout(()=> confetti.style.display = "none", 1700);
+  }
+
+  async function loadQuestion(){
+    locked = false;
+    hideToast();
+    optionsEl.innerHTML = "";
+    imgBox.style.display = "none";
+    qImg.src = "";
+
+    setScore();
     const current = quiz[index];
-    qEl.textContent = current.q;
 
-    current.options.forEach((opt,i)=>{
+    // subtitle changes slightly
+    subtitleEl.textContent = (current.type === "final")
+      ? "Choose wisely 😌"
+      : "Answer correctly to level up 😌";
+
+    // typing animation for question
+    await typeText(questionEl, current.q, 18);
+
+    // image question
+    if(current.type === "photo" && current.image){
+      qImg.src = current.image;
+      imgBox.style.display = "block";
+    }
+
+    current.options.forEach((opt, i) => {
       const btn = document.createElement("button");
-      btn.textContent = opt;
+      btn.className = "optBtn";
 
-      if(current.final){
-        btn.classList.add(i===0 ? "yes" : "no");
+      // final yes/no styling
+      if(current.type === "final"){
+        btn.classList.add(i === 0 ? "yes" : "no");
       }
 
-      btn.onclick = ()=>handleAnswer(btn,i);
-      optEl.appendChild(btn);
+      btn.textContent = opt;
+      btn.addEventListener("click", () => handleAnswer(btn, i));
+      optionsEl.appendChild(btn);
     });
   }
 
-  function handleAnswer(btn,i){
+  function nudgeNoButton(btn){
+    // small dodge movement like the reel
+    const x = (Math.random()*120 - 60);
+    const y = (Math.random()*40 - 20);
+    btn.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  async function handleAnswer(btn, i){
+    if(locked) return;
+
     const current = quiz[index];
 
-    if(current.final){
-      if(i===1){
-        toast.textContent = "❌ Invalid choice. System detected you're already my Valentine.";
-        toast.style.display="block";
-        btn.style.transform=`translate(${Math.random()*80-40}px,${Math.random()*40-20}px)`;
+    // FINAL SCREEN behavior
+    if(current.type === "final"){
+      if(i === 1){
+        showToast("❌ Invalid choice. System detected you are already my Valentine.");
+        nudgeNoButton(btn);
         return;
       }
+
+      // yes chosen
+      locked = true;
       btn.classList.add("correct");
-      qEl.innerHTML = "🎉 Yay! You're My Valentine! 🎉<br><br>Thank you for making my day special ❤️";
-      optEl.innerHTML = "";
       score++;
-      scoreEl.textContent = `Score: ${score}/${quiz.length}`;
+      setScore();
+      popConfetti();
+
+      await sleep(250);
+      questionEl.innerHTML = `🎉 Yay ${herName}! You're My Valentine! 🎉`;
+      subtitleEl.innerHTML = `Thank you for making my day special ❤️<br>Now I owe you chocolates + hugs 🫶🍫`;
+      optionsEl.innerHTML = "";
+      imgBox.style.display = "none";
+      hideToast();
       return;
     }
 
+    // Regular questions
     if(i === current.answer){
+      locked = true;
       btn.classList.add("correct");
       score++;
-      setTimeout(()=>{
-        index++;
-        loadQuestion();
-      },700);
+      setScore();
+      await sleep(550);
+      index++;
+      loadQuestion();
     } else {
       btn.classList.add("wrong");
-      toast.textContent = current.wrongMsg;
-      toast.style.display="block";
+      showToast(current.wrongMsg || "Wrong 😅");
     }
   }
 
-  loadQuestion();
+  // Initialize music UI (off by default)
+  setMusicUI();
 </script>
-
 </body>
 </html>
