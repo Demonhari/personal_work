@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For You ❤️</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: linear-gradient(135deg,#6a11cb,#2575fc);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#333;
+    }
+
+    .card{
+      background:#fff;
+      width:min(420px,92vw);
+      border-radius:16px;
+      padding:22px;
+      box-shadow:0 20px 40px rgba(0,0,0,.2);
+      text-align:center;
+    }
+
+    .score{
+      background:#f2f2f2;
+      border-radius:20px;
+      padding:6px 14px;
+      font-weight:600;
+      margin-bottom:14px;
+      display:inline-block;
+    }
+
+    h2{
+      margin:12px 0 16px;
+      font-size:20px;
+    }
+
+    .options{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    button{
+      padding:12px;
+      border-radius:10px;
+      border:2px solid #e0e0e0;
+      background:#fafafa;
+      font-size:16px;
+      cursor:pointer;
+      transition:.15s;
+    }
+
+    button:hover{
+      background:#f0f0f0;
+      transform:scale(1.02);
+    }
+
+    .correct{
+      background:#4CAF50 !important;
+      color:#fff;
+      border-color:#4CAF50;
+    }
+
+    .wrong{
+      background:#e53935 !important;
+      color:#fff;
+      border-color:#e53935;
+    }
+
+    .toast{
+      margin-top:14px;
+      font-weight:600;
+      color:#ffeb3b;
+      display:none;
+      animation: pop .4s ease;
+    }
+
+    @keyframes pop{
+      from{transform:scale(.8);opacity:0}
+      to{transform:scale(1);opacity:1}
+    }
+
+    .valentine button{
+      font-size:18px;
+      font-weight:600;
+    }
+
+    .yes{background:#4CAF50;color:#fff;border:none;}
+    .no{background:#e53935;color:#fff;border:none;position:relative;}
+
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="score" id="score">Score: 0/4</div>
+  <h2 id="question"></h2>
+  <div class="options" id="options"></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  const quiz = [
+    {
+      q: "What is the gift that I bought on our first meet?",
+      options: ["Teddy 🧸","Chocolates 🍫","Flowers 🌹","Never gifted 😅"],
+      answer: 0,
+      wrongMsg: "😤 Kill you after the test"
+    },
+    {
+      q: "Where do you want to travel next?",
+      options: ["Kenya 🇰🇪","Greece 🇬🇷","Japan 🇯🇵","Switzerland 🇨🇭"],
+      answer: 2,
+      wrongMsg: "Hmm… noted anyway 😏"
+    },
+    {
+      q: "Where did we click this photo?",
+      options: ["Manali","Ooty","Wayanad","Goa"],
+      answer: 2,
+      wrongMsg: "Think harder 😌"
+    },
+    {
+      q: "Will you be my Valentine? 💖",
+      options: ["Yes ❤️","No 🙃"],
+      answer: 0,
+      final: true
+    }
+  ];
+
+  let index = 0;
+  let score = 0;
+
+  const qEl = document.getElementById("question");
+  const optEl = document.getElementById("options");
+  const scoreEl = document.getElementById("score");
+  const toast = document.getElementById("toast");
+
+  function loadQuestion(){
+    toast.style.display = "none";
+    optEl.innerHTML = "";
+    scoreEl.textContent = `Score: ${score}/${quiz.length}`;
+    const current = quiz[index];
+    qEl.textContent = current.q;
+
+    current.options.forEach((opt,i)=>{
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+
+      if(current.final){
+        btn.classList.add(i===0 ? "yes" : "no");
+      }
+
+      btn.onclick = ()=>handleAnswer(btn,i);
+      optEl.appendChild(btn);
+    });
+  }
+
+  function handleAnswer(btn,i){
+    const current = quiz[index];
+
+    if(current.final){
+      if(i===1){
+        toast.textContent = "❌ Invalid choice. System detected you're already my Valentine.";
+        toast.style.display="block";
+        btn.style.transform=`translate(${Math.random()*80-40}px,${Math.random()*40-20}px)`;
+        return;
+      }
+      btn.classList.add("correct");
+      qEl.innerHTML = "🎉 Yay! You're My Valentine! 🎉<br><br>Thank you for making my day special ❤️";
+      optEl.innerHTML = "";
+      score++;
+      scoreEl.textContent = `Score: ${score}/${quiz.length}`;
+      return;
+    }
+
+    if(i === current.answer){
+      btn.classList.add("correct");
+      score++;
+      setTimeout(()=>{
+        index++;
+        loadQuestion();
+      },700);
+    } else {
+      btn.classList.add("wrong");
+      toast.textContent = current.wrongMsg;
+      toast.style.display="block";
+    }
+  }
+
+  loadQuestion();
+</script>
+
+</body>
+</html>
