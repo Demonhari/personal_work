@@ -20,6 +20,9 @@
     }
 
     *{ box-sizing:border-box; }
+
+    html, body { height: 100%; }
+
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -27,13 +30,24 @@
       background: radial-gradient(1200px 800px at 20% 15%, #7f5bff33, transparent 60%),
                   radial-gradient(1000px 700px at 85% 70%, #ff5bd833, transparent 60%),
                   linear-gradient(135deg, var(--bg1), var(--bg2));
-      min-height:100vh;
+
+      /* ✅ KEY FIX: allow scrolling on phones */
+      min-height: 100svh;              /* modern mobile-safe viewport */
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+
       display:flex;
-      align-items:center;
       justify-content:center;
+      align-items:flex-start;          /* top align so it can scroll */
       padding:18px;
-      overflow:hidden;
+
       -webkit-text-size-adjust: 100%;
+    }
+
+    /* keep centered on tall screens (desktop / big tablets) */
+    @media (min-height: 780px){
+      body{ align-items:center; }
     }
 
     /* subtle floating dots */
@@ -69,7 +83,12 @@
       100% { transform: translateY(-120vh) translateX(var(--drift)) scale(1.2); opacity:0; }
     }
 
-    .wrap{ width:min(560px, 96vw); position:relative; }
+    .wrap{
+      width:min(560px, 96vw);
+      position:relative;
+      /* extra bottom space so last option isn't stuck at bottom edge */
+      padding-bottom: 22px;
+    }
 
     .topbar{
       display:flex;
@@ -186,7 +205,11 @@
       margin: 10px 0 12px;
       display:none;
     }
-    .imgBox img{ display:block; width:100%; height:auto; }
+    .imgBox img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
 
     .options{
       display:flex;
@@ -212,7 +235,10 @@
       user-select:none;
       position:relative;
       overflow:hidden;
-      touch-action: manipulation;
+
+      /* ✅ allow scroll gestures (don’t block pan-y) */
+      touch-action: pan-y manipulation;
+
       -webkit-tap-highlight-color: transparent;
     }
     .optBtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.9); }
@@ -334,7 +360,7 @@
       border: 1px solid rgba(0,0,0,.06);
       max-height: 62vh;
       overflow:auto;
-      -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
+      -webkit-overflow-scrolling: touch;
     }
     .modalActions{
       display:flex;
@@ -403,7 +429,6 @@
   </div>
 
 <script>
-  // ====== CUSTOMIZE YOUR QUIZ HERE ======
   const quiz = [
     {
       type: "mcq",
@@ -434,7 +459,6 @@
       answer: 0
     }
   ];
-  // =====================================
 
   const HER_NAME = "Vaish";
 
@@ -468,7 +492,6 @@ I know things haven’t been easy for us lately, and there are moments when ever
   const hearts = document.getElementById("hearts");
   let heartsTimer = null;
 
-  // Modal
   const modal = document.getElementById("modal");
   const letter = document.getElementById("letter");
   const closeModal = document.getElementById("closeModal");
@@ -502,7 +525,7 @@ I know things haven’t been easy for us lately, and there are moments when ever
     }catch(e){}
   }
 
-  // Tiny built-in beep SFX
+  // Tiny built-in beep SFX (Safari compatible)
   let audioCtx = null;
   function getCtx(){
     if (audioCtx) return audioCtx;
@@ -651,7 +674,6 @@ I know things haven’t been easy for us lately, and there are moments when ever
   function openSurprise(){
     letter.textContent = SURPRISE_TEXT;
     modal.classList.add("show");
-    // light extra confetti when opening the letter
     popConfetti();
   }
 
@@ -659,7 +681,6 @@ I know things haven’t been easy for us lately, and there are moments when ever
     modal.classList.remove("show");
   }
 
-  // Close modal on backdrop click
   modal.addEventListener("click", (e) => {
     if (e.target === modal) closeSurprise();
   });
@@ -692,7 +713,6 @@ I know things haven’t been easy for us lately, and there are moments when ever
         questionEl.innerHTML = `🎉 Yay ${HER_NAME}! You're My Valentine! 🎉`;
         subtitleEl.innerHTML = `Thank you for making my day special ❤️<br>Now I owe you chocolates + hugs 🫶🍫`;
 
-        // Add Surprise button
         optionsEl.innerHTML = "";
         const surpriseBtn = document.createElement("button");
         surpriseBtn.className = "optBtn";
@@ -742,6 +762,8 @@ I know things haven’t been easy for us lately, and there are moments when ever
       index = 0;
       score = 0;
       questionEl.classList.add("cursor");
+      // ensure page starts near top on mobile after start
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
     loadQuestion();
